@@ -1,6 +1,13 @@
 # Prerequisites
 *.d
 
+# Ignore build
+bin/*
+obj/*
+
+# Ignore IDE
+.vscode/*
+
 # Compiled Object files
 *.slo
 *.lo
