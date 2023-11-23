@@ -10,17 +10,27 @@ private:
     std::string subject;
 
 public:
-    // Constructors
-    Teacher(const std::string &firstName, const std::string &lastName, const std::string &subject);
+    /* Constructors */
+    Teacher(const std::string &firstName, const std::string &lastName, const std::string &subject){};
 
-    // Getter for subject
-    const std::string &getSubject() const;
+    /* Getters */
+    const std::string &Teacher::getSubject() const
+    {
+        return subject;
+    }
 
-    // Setter for subject
-    void setSubject(const std::string &newSubject);
+    /* Setters */
+    void Teacher::setSubject(const std::string &newSubject)
+    {
+        subject = newSubject;
+    }
 
-    // Function to override the printInfo function in Person
-    void printInfo() const override;
+    /* Functions */
+    void printInfo() const override
+    {
+        Person::printInfo();
+        std::cout << "Subject: " << getSubject() << std::endl;
+    }
 };
 
 #endif // TEACHER_H
