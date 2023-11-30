@@ -8,7 +8,10 @@
 class Person
 {
 private:
-    /* Fields */
+    // Static
+    static int personCount;
+
+    // Fields
     std::string dateCreated;
     std::string firstName;
     std::string middleName;
@@ -19,7 +22,7 @@ private:
     std::string birthDate;
 
 public:
-    /* Constructors */
+    // Constructors
     Person(const std::string &firstName,
            const std::string &middleName,
            const std::string &lastName,
@@ -41,9 +44,25 @@ public:
         }
 
         dateCreated = getCurrentDateAsString();
+        personCount++;
+    }
+    Person()
+    {
+        dateCreated = getCurrentDateAsString();
+        personCount++;
     }
 
-    /* Getters */
+    // Deconstructors
+    virtual ~Person()
+    {
+        personCount--;
+    }
+
+    // Getters
+    static int getPersonCount()
+    {
+        return personCount;
+    }
     const std::string &getDateCreated() const
     {
         return dateCreated;
@@ -77,7 +96,7 @@ public:
         return birthDate;
     }
 
-    /* Setters */
+    // Setters
     void setDateCreated(const std::string &newDateCreated)
     {
         if (!isValidDateFormat(newDateCreated))
@@ -121,7 +140,7 @@ public:
         birthDate = newBirthDate;
     }
 
-    /* Functions */
+    // Functions
     void printInfo() const
     {
         std::cout << "First Name: " << getFirstName() << std::endl;
@@ -133,6 +152,61 @@ public:
         std::cout << "Birth Date: " << getBirthDate() << std::endl;
         std::cout << "Date Created: " << getDateCreated() << std::endl;
     }
+
+    // Overloading output operator
+    friend std::ostream &operator<<(std::ostream &out, const Person &person)
+    {
+        out << "First Name: " << person.getFirstName() << std::endl;
+        out << "Middle Name: " << person.getMiddleName() << std::endl;
+        out << "Last Name: " << person.getLastName() << std::endl;
+        out << "Father's Name: " << person.getFatherName() << std::endl;
+        out << "Mother's Name: " << person.getMotherName() << std::endl;
+        out << "Identity ID: " << person.getIdentityID() << std::endl;
+        out << "Birth Date: " << person.getBirthDate() << std::endl;
+        out << "Date Created: " << person.getDateCreated() << std::endl;
+
+        return out;
+    }
+
+    // Overloading input operator
+    friend std::istream &operator>>(std::istream &in, Person &person)
+    {
+        // Assuming the input format is the same as the printInfo format
+        std::string firstName, middleName, lastName, fatherName, motherName, identityID, birthDate;
+
+        std::cout << "Enter First Name: ";
+        in >> firstName;
+        person.setFirstName(firstName);
+
+        std::cout << "Enter Middle Name: ";
+        in >> middleName;
+        person.setMiddleName(middleName);
+
+        std::cout << "Enter Last Name: ";
+        in >> lastName;
+        person.setLastName(lastName);
+
+        std::cout << "Enter Father's Name: ";
+        in >> fatherName;
+        person.setFatherName(fatherName);
+
+        std::cout << "Enter Mother's Name: ";
+        in >> motherName;
+        person.setMotherName(motherName);
+
+        std::cout << "Enter Identity ID: ";
+        in >> identityID;
+        person.setIdentityID(identityID);
+
+        std::cout << "Enter Birth Date (dd/mm/yyyy): ";
+        in >> birthDate;
+        person.setBirthDate(birthDate);
+
+        return in;
+    }
 };
+
+// Initialize it out of the class definition
+int Person::personCount = 0;
 
 #endif // PERSON_H

@@ -1,31 +1,37 @@
 #include "secretary.h"
 #include "person.h"
+#include "student.h"
+#include "teacher.h"
+
 #include <iostream>
 
 int main()
 {
-    // Example usage:
-    Secretary secretary;
-
-    // Adding persons
-    Person person1("John", "William", "Doe", "George", "Jane", "123456789", "01/01/1990");
-    secretary.addPerson(person1);
-
-    Person person2("Jane", "Marie", "Smith", "Michael", "Emily", "987654321", "15/05/1985");
-    secretary.addPerson(person2);
-
-    // Searching for a person
-    const std::string searchIdentityID = "123456789";
-    const Person *foundPerson = secretary.searchPersonByIdentityID(searchIdentityID);
-
-    if (foundPerson != nullptr)
+    try
     {
-        std::cout << "Person found:" << std::endl;
-        foundPerson->printInfo();
+        Secretary d;
+
+        // People
+        Person *john = new Person("John", "Doe", "L.", "AA", "BB", "ID123", "01/01/1990");
+        Person *alice = new Person("Alice", "Smith", "L.", "AA", "BB", "ID456", "02/02/1995");
+        Student *petros = new Student("Petros", "G.", "L.", "AA", "BB", "ID001", "03/03/1993", 1001, "Computer Science", "01/09/2020", "01/07/2024");
+        Student *nikos = new Student("Nikos", "K.", "L.", "AA", "BB", "ID002", "04/04/1994", 1002, "Mathematics", "01/09/2021", "01/07/2025");
+        Teacher *christos = new Teacher("Dr.", "Smith", "Computer Science");
+        Teacher *dimitris = new Teacher("Prof.", "Johnson", "Mathematics");
+
+        // =
+        Secretary _d;
+        _d = d;
+
+        // Adding
+        d = d + john + alice + petros + nikos + christos + dimitris;
+
+        // Searching
+        d.searchPerson();
     }
-    else
+    catch (const std::exception &e)
     {
-        std::cout << "Person not found." << std::endl;
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
     return 0;
