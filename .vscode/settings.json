@@ -50,7 +50,10 @@
     "iomanip": "cpp",
     "iostream": "cpp",
     "istream": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "cstring": "cpp",
+    "map": "cpp",
+    "fstream": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

@@ -1,142 +1,88 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
-#include "person.h"
 #include <string>
+#include <vector>
+
+#include "person.h"
+#include "semester.h"
+
+using namespace std;
 
 class Student : public Person
 {
 private:
-    // Fields
-    int studentID;
-    std::string studyProgram;
-    std::string dateStarted;
-    std::string dateFinished;
+    /* Fields */
+    Semester currentSemester; // The semester that the student is already in.
+    vector<string> hasPassed; // The courses (IDs) that the student has passed.
 
 public:
-    // Constructors
-    Student(const std::string &firstName,
-            const std::string &middleName,
-            const std::string &lastName,
-            const std::string &fatherName,
-            const std::string &motherName,
-            const std::string &identityID,
-            const std::string &birthDate,
-            int id,
-            const std::string &studyProgram,
-            const std::string &startedDate,
-            const std::string &finishedDate)
-        : Person(firstName, middleName, lastName, fatherName, motherName, identityID, birthDate),
-          studentID(id),
-          studyProgram(studyProgram),
-          dateStarted(startedDate),
-          dateFinished(finishedDate)
-    {
-        if (!isValidDateFormat(startedDate) || !isValidDateFormat(finishedDate))
-        {
-            throw std::invalid_argument("Invalid date format. Please use dd/mm/yyyy.");
-        }
-    }
-
+    /* Constructors */
     Student() : Person() {}
-    // Deconstructor
+
+    /* Deconstructor */
     virtual ~Student() {}
 
-    // Getters
-    int getStudentID() const
-    {
-        return studentID;
+    /* Getters */
+    Semester getCurrentSemester() const {
+        return currentSemester;
     }
-    const std::string &getMajor() const
-    {
-        return studyProgram;
-    }
-    const std::string &getDateStarted() const
-    {
-        return dateStarted;
-    }
-    const std::string &getDateFinished() const
-    {
-        return dateFinished;
+    vector<string> getHasPassed() const {
+        return hasPassed;
     }
 
-    // Setters
-    void setStudentID(int newStudentID)
-    {
-        studentID = newStudentID;
+    /* Setters */ 
+    void setCurrentSemester(Semester semester) {
+        currentSemester = semester;
     }
-    void setStudyProgram(const std::string &newMajor)
+    void setHasPassed(const vector<string> ids)
     {
-        studyProgram = newMajor;
+        hasPassed = ids;
     }
-    void setDateStarted(const std::string &newDateStarted)
-    {
-        if (!isValidDateFormat(newDateStarted))
-        {
-            throw std::invalid_argument("Invalid date format. Please use dd/mm/yyyy.");
+    void addPassedCourse(const std::string& courseId) {
+        hasPassed.push_back(courseId);
+    }
+    bool removePassedCourse(const std::string& courseId) {
+        auto it = std::find(hasPassed.begin(), hasPassed.end(), courseId);
+        if (it != hasPassed.end()) {
+            hasPassed.erase(it);
+            return true;
+        }
+        return false;
+    }
+
+    /* CSV */ 
+    static Student fromCSVLine(const string& line) {
+        stringstream ss(line);
+        string token;
+        vector<string> tokens;
+
+        // Split line by commas
+        while (getline(ss, token, ',')) {
+            tokens.push_back(token);
         }
 
-        dateStarted = newDateStarted;
+        Student student;
+        student.setIdentityID(tokens[0]);
+        student.setFirstName(tokens[1]);
+        student.setLastName(tokens[2]);
+        student.setBirthDate(tokens[3]);
+        student.setCurrentSemester(Semester(stringToInt(tokens[4].c_str())));
+        student.setHasPassed(splitString(tokens[5], ';'));
+
+        return student;
     }
-    void setDateFinished(const std::string &newDateFinished)
-    {
-        if (!isValidDateFormat(newDateFinished))
-        {
-            throw std::invalid_argument("Invalid date format. Please use dd/mm/yyyy.");
+    string toCSVString() const {
+        stringstream ss;
+        ss << getIdentityID() << "," << getFirstName() << "," << getLastName() << "," << getBirthDate() << "," << getCurrentSemester() << ",";
+
+        // Serialize hasPassed
+        for (size_t i = 0; i < getHasPassed().size(); ++i) {
+            ss << hasPassed[i];
+            if (i < hasPassed.size() - 1) ss << ";";
         }
 
-        dateFinished = newDateFinished;
-    }
-    void printInfo() const
-    {
-        std::cout << "== STUDENT ==" << std::endl;
-        Person::printInfo();
-        std::cout << "Student ID: " << getStudentID() << std::endl;
-        std::cout << "Study Program: " << getMajor() << std::endl;
-        std::cout << "Date Started: " << getDateStarted() << std::endl;
-        std::cout << "Date Finished: " << getDateFinished() << std::endl;
-    }
-
-    // Overloading output operator for Student
-    friend std::ostream &operator<<(std::ostream &out, const Student &student)
-    {
-        out << "== STUDENT ==" << std::endl;
-        out << static_cast<const Person &>(student); // Output the Person part
-        out << "Student ID: " << student.getStudentID() << std::endl;
-        out << "Study Program: " << student.getMajor() << std::endl;
-        out << "Date Started: " << student.getDateStarted() << std::endl;
-        out << "Date Finished: " << student.getDateFinished() << std::endl;
-
-        return out;
-    }
-
-    // Overloading input operator
-    friend std::istream &operator>>(std::istream &in, Student &student)
-    {
-        Person &person = student;
-
-        in >> person;
-
-        int studentID;
-        std::string major, dateStarted, dateFinished;
-
-        std::cout << "Enter Student ID: ";
-        in >> studentID;
-        student.setStudentID(studentID);
-
-        std::cout << "Enter Study Program: ";
-        in >> major;
-        student.setStudyProgram(major);
-
-        std::cout << "Enter Date Started (dd/mm/yyyy): ";
-        in >> dateStarted;
-        student.setDateStarted(dateStarted);
-
-        std::cout << "Enter Date Finished (dd/mm/yyyy): ";
-        in >> dateFinished;
-        student.setDateFinished(dateFinished);
-
-        return in;
+        return ss.str();
     }
 };
 

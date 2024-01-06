@@ -1,7 +1,7 @@
 # Makefile
 
 CXX = g++
-CXXFLAGS = -std=c++11 -I./inc
+CXXFLAGS = -I./inc -lncurses
 SRC_DIR = src
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_DIR = obj
@@ -13,12 +13,12 @@ all: $(TARGETS)
 # rule to compile .cpp files into .o files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) -c $< -o $@ $(CXXFLAGS) 
 
 # rule to build cube
 program: $(OBJ_DIR)/program.o
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $^ -o $(BIN_DIR)/$@
+	$(CXX) $^ -o $(BIN_DIR)/$@ $(CXXFLAGS) 
 
 
 # rule for debug
