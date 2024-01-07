@@ -3,18 +3,24 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 
-## Usage
+## Build
 
-Firstly you have to build the project.
+This project has only one dependency: `ncurses`.
 
 ```sh
-make
+$ sudo apt-get install build-essential libncurses5-dev libncursesw5-dev
+```
+
+You should be able to build the project.
+
+```sh
+$ make
 ```
 
 Then, just run the `program` inside the `./bin` folder.
 
 ```sh
-./bin/program
+$ ./bin/program
 ```
 
 You should be able to view the following TUI.
