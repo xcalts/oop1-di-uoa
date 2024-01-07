@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdexcept>
 #include <curses.h>
 #include <signal.h>
 #include <string>
@@ -26,6 +27,8 @@ void display_menu(WINDOW *menu_win, int highlight, const char *choices[], int n_
 }
 
 int main() {
+    try {
+
     // Initialize ncurses
     initscr();
     cbreak();
@@ -247,6 +250,9 @@ int main() {
 
     // Save
     secretary.saveAll();
+    } catch (const exception& e) {
+        cerr << "Exception caught: " << e.what() << endl;
+    }
 
     return 0;
 }
