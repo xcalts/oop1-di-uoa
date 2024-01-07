@@ -17,6 +17,10 @@ Then, just run the `program` inside the `./bin` folder.
 ./bin/program
 ```
 
+You should be able to view the following TUI.
+
+![image](https://github.com/xcalts/oop1-di-uoa/assets/91835528/c1bed0db-2e9e-494e-9332-59d2bab934ff)
+
 [contributors-shield]: https://img.shields.io/github/contributors/xcalts/oop1-di-uoa.svg?style=for-the-badge
 [contributors-url]: https://github.com/xcalts/oop1-di-uoa/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/xcalts/oop1-di-uoa.svg?style=for-the-badge
