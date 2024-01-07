@@ -12,23 +12,21 @@ using namespace std;
 class Course
 {
 private:
-    // Fields
-    string courseId;
-    string name;
-    int noEcts;
-    Semester semester;
-    bool isNecessary;
-    vector<string> professorsIds;
-    vector<string> studentsIds;
+    /* Fields */
+    string courseId;              // The UUID of the course.
+    string name;                  // The name of the course.
+    int noEcts;                   // The number of ECTS of the course.
+    Semester semester;            // The semester that it is teached.
+    bool isNecessary;             // True, if the course is necessary for gradutation.
 
 public:
-    // Constructors
+    /* Constructors */
     Course() {}
 
-    // Deconstructor
+    /* Deconstructor */
     virtual ~Course() {}
 
-    // Setters
+    /* Setters */
     void setCourseId(const string& id) {
         courseId = id;
     }
@@ -44,38 +42,8 @@ public:
     void setIsNecessary(bool necessary) {
         isNecessary = necessary;
     }
-    void setProfessorsIds(const vector<string> ids)
-    {
-        professorsIds = ids;
-    }
-    void addProfessorId(const string& professorId) {
-        professorsIds.push_back(professorId);
-    }
-    bool removeProfessorId(const string& professorId) {
-        auto it = std::find(professorsIds.begin(), professorsIds.end(), professorId);
-        if (it != professorsIds.end()) {
-            professorsIds.erase(it);
-            return true; // Professor found and removed
-        }
-        return false; // Professor not found
-    }
-    void setStudentsIds(const vector<string> ids)
-    {
-        studentsIds = ids;
-    }
-    void addStudentId(const string& studentId) {
-        studentsIds.push_back(studentId);
-    }
-    bool removeStudentId(const string& studentId) {
-        auto it = std::find(studentsIds.begin(), studentsIds.end(), studentId);
-        if (it != studentsIds.end()) {
-            studentsIds.erase(it);
-            return true; 
-        }
-        return false;
-    }
     
-    // Getters
+    /* Getters */
     string getCourseId() const {
         return courseId;
     }
@@ -88,17 +56,11 @@ public:
     Semester getSemester() const {
         return semester;
     }
-    vector<string> getProfessorsIds() const {
-        return professorsIds;
-    }
-    vector<string> getStudentsIds() const {
-        return professorsIds;
-    }
     bool getIsNecessary() const {
         return isNecessary;
     }
 
-    // CSV Serialization 
+    /* CSV */ 
     static Course fromCSVLine(const string& line) {
         stringstream ss(line);
         string token;
@@ -115,29 +77,28 @@ public:
         course.setNoEcts(stoi(tokens[2]));
         course.setSemester(Semester(stringToInt(tokens[3].c_str())));
         course.setIsNecessary(tokens[4] == "true");
-        course.setProfessorsIds(splitString(tokens[5], ';'));
-        course.setStudentsIds(splitString(tokens[6], ';'));
+        // course.setProfessorsIds(splitString(tokens[5], ';'));
+        // course.setStudentsIds(splitString(tokens[6], ';'));
 
         return course;
     }
-    
     string toCSVString() const {
         stringstream ss;
         ss << courseId << "," << name << "," << noEcts << "," << semester << ",";
-        ss << (isNecessary ? "true" : "false") << ",";
+        ss << (isNecessary ? "true" : "false");
 
         // Serialize professorsIds
-        for (size_t i = 0; i < professorsIds.size(); ++i) {
-            ss << professorsIds[i];
-            if (i < professorsIds.size() - 1) ss << ";";
-        }
-        ss << ",";
+        // for (size_t i = 0; i < professorsIds.size(); ++i) {
+        //     ss << professorsIds[i];
+        //     if (i < professorsIds.size() - 1) ss << ";";
+        // }
+        // ss << ",";
 
-        // Serialize studentsIds
-        for (size_t i = 0; i < studentsIds.size(); ++i) {
-            ss << studentsIds[i];
-            if (i < studentsIds.size() - 1) ss << ";";
-        }
+        // // Serialize studentsIds
+        // for (size_t i = 0; i < studentsIds.size(); ++i) {
+        //     ss << studentsIds[i];
+        //     if (i < studentsIds.size() - 1) ss << ";";
+        // }
 
         return ss.str();
     }

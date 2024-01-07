@@ -9,24 +9,24 @@ using namespace std;
 class Professor : public Person
 {
 private:
-    // Fields
+    /* Fields */
     string field;
 
 public:
-    // Constructors
+    /* Constructors */
     Professor() : Person() {}
 
-    // Getters
+    /* Getters */
     const string &getField() const {
         return field;
     }
 
-    // Setters
+    /* Setters */
     void setField(const string &newField) {
         field = newField;
     }
 
-    // CSV Serialization 
+    /* CSV Serialization */ 
     static Professor fromCSVLine(const string& line) {
         stringstream ss(line);
         string token;

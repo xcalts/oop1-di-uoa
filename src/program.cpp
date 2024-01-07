@@ -25,7 +25,6 @@ void display_menu(WINDOW *menu_win, int highlight, const char *choices[], int n_
     wrefresh(menu_win);
 }
 
-
 int main() {
     // Initialize ncurses
     initscr();
@@ -34,12 +33,51 @@ int main() {
     intrflush(stdscr, FALSE);
     keypad(stdscr, TRUE);
 
+    // Get screen size
+    int maxY, maxX;
+    getmaxyx(stdscr, maxY, maxX);
+
+    // Calculate dimensions
+    int menuWidth = maxX / 3;
+    int mainWidth = maxX - menuWidth;
+
+    // Create a menu window on the left
+    WINDOW* menuWindow = newwin(maxY, menuWidth, 0, 0);
+    scrollok(menuWindow, TRUE); // Enable scrolling for the mainWindow
+    keypad(menuWindow, TRUE);
+    mvwprintw(menuWindow, 1, 1, "Menu");
+
+    // Create a main window on the right
+    WINDOW* mainWindow = newwin(maxY, mainWidth, 0, menuWidth);
+    
+    scrollok(mainWindow, TRUE); // Enable scrolling for the mainWindow
+    int currentLine = 0;
+    box(mainWindow, currentLine++, 0);
+    mvwprintw(mainWindow, currentLine++, 1, " ____  ____  ____        ____  ____  ____     _  _____ ____  _____      ____");
+    mvwprintw(mainWindow, currentLine++, 1, "/  _ \\/  _ \\/  __\\      /  __\\/  __\\/  _ \\   / |/  __//   _\\/__ __\\    /_   \\");
+    mvwprintw(mainWindow, currentLine++, 1, "| / \\|| / \\||  \\/|_____ |  \\/||  \\/|| / \\|   | ||  \\  |  /    / \\_____  /   /");
+    mvwprintw(mainWindow, currentLine++, 1, "| \\_/|| \\_/||  __/\\____\\|  __/|    /| \\_/|/\\_| ||  /_ |  \\_   | |\\____\\/   /_");
+    mvwprintw(mainWindow, currentLine++, 1, "\\____/\\____/\\_/         \\_/   \\_/\\_\\____/\\____/\\____\\____/  \\_/      \\____/");
+    mvwprintw(mainWindow, currentLine++, 1, " ");
+    mvwprintw(mainWindow, currentLine++, 1, "OOP - Project 2");
+    mvwprintw(mainWindow, currentLine++, 1, "Christos Kaltsas");
+    mvwprintw(mainWindow, currentLine++, 1, "1115202000289");
+    mvwprintw(mainWindow, currentLine++, 1, " ");
+    mvwprintw(mainWindow, currentLine++, 1, "Notes:");
+    mvwprintw(mainWindow, currentLine++, 1, "1. Reallistically, we would not develop such an application in C++. We would prefer to use .NET or  NodeJS or ...");
+    mvwprintw(mainWindow, currentLine++, 1, "2. This application propably has a lot of validation bugs, since there are not tests.");
+    mvwprintw(mainWindow, currentLine++, 1, "3. I would not be surprised that if this application had buffer overflows etc..");
+    mvwprintw(mainWindow, currentLine++, 1, "4. There is not authentication/authorization ..");
+    mvwprintw(mainWindow, currentLine++, 1, "5. The TUI has some limitation and using ncurses was quite difficult.");
+    mvwprintw(mainWindow, currentLine++, 1, "6. A proper database and not csv should be used. We meet a lot of difficultes such as holding all this data on memory etc.");
+    wrefresh(mainWindow);
+
     // Initialize secretery
     Secretary secretary;
     secretary.loadAll();
 
     // Define the Menu options
-    int n_choices = 21;
+    int n_choices = 28;
     const char *choices[] = {
         " 1. Create a new course.",
         " 2. Read an existing course.",
@@ -56,40 +94,20 @@ int main() {
         "13. Update an existing professor.",
         "14. Delete an existing professor.",
         "15. List all professors.",
-        "16. Assign a course to a professor.",
-        "17. Register a student in a course.",
-        "18. Add a passed course to a student.",
-        "19. ",
-        "20. ",
-        "21. Save the database."
+        "16. Create a new sixmonth.",
+        "17. Read an existing sixmonth.",
+        "18. Delete an existing sixmonth.",
+        "19. List all sixmonths.",
+        "20. Create a new attendance.",
+        "21. Read an existing attendance.",
+        "22. Update an existing attendance.",
+        "23. Delete an existing attendance.",
+        "24. List all attendances.",
+        "25. Get the stats of a professor in a 6month.",
+        "26. Show students that passed a course in a 6month.",
+        "27. Print the grades of a student.",
+        "28. Save all.",
     };
-
-    // Get screen size
-    int maxY, maxX;
-    getmaxyx(stdscr, maxY, maxX);
-
-    // Calculate dimensions
-    int menuWidth = maxX / 4;
-    int mainWidth = maxX - menuWidth;
-
-    // Create a menu window on the left
-    WINDOW* menuWindow = newwin(maxY, menuWidth, 0, 0);
-    keypad(menuWindow, TRUE);
-    mvwprintw(menuWindow, 1, 1, "Menu");
-
-    // Create a main window on the right
-    WINDOW* mainWindow = newwin(maxY, mainWidth, 0, menuWidth);
-    box(mainWindow, 0, 0);
-    mvwprintw(mainWindow, 1, 1, " ____  ____  ____        ____  ____  ____     _  _____ ____  _____      ____");
-    mvwprintw(mainWindow, 2, 1, "/  _ \\/  _ \\/  __\\      /  __\\/  __\\/  _ \\   / |/  __//   _\\/__ __\\    /_   \\");
-    mvwprintw(mainWindow, 3, 1, "| / \\|| / \\||  \\/|_____ |  \\/||  \\/|| / \\|   | ||  \\  |  /    / \\_____  /   /");
-    mvwprintw(mainWindow, 4, 1, "| \\_/|| \\_/||  __/\\____\\|  __/|    /| \\_/|/\\_| ||  /_ |  \\_   | |\\____\\/   /_");
-    mvwprintw(mainWindow, 5, 1, "\\____/\\____/\\_/         \\_/   \\_/\\_\\____/\\____/\\____\\____/  \\_/      \\____/");
-    mvwprintw(mainWindow, 7, 1, " ");
-    mvwprintw(mainWindow, 8, 1, "OOP - Project 2");
-    mvwprintw(mainWindow, 9, 1, "Christos Kaltsas");
-    mvwprintw(mainWindow, 10, 1, "1115202000289");
-    wrefresh(mainWindow);
 
     // Menu interaction
     int highlight = 1;
@@ -170,15 +188,42 @@ int main() {
                         secretary.listProfessors(mainWindow);
                         break;
                     case 16:
-                        secretary.assignProfessor(mainWindow);
+                        secretary.createSixmonth(mainWindow);
                         break;
                     case 17:
-                        secretary.registerStudent(mainWindow);
+                        secretary.readSixmonth(mainWindow);
                         break;
                     case 18:
-                        secretary.passCourse(mainWindow);
+                        secretary.deleteSixmonth(mainWindow);
+                        break;
+                    case 19:
+                        secretary.listSixmonths(mainWindow);
+                        break;
+                    case 20:
+                        secretary.createAttendance(mainWindow);
                         break;
                     case 21:
+                        secretary.readAttendance(mainWindow);
+                        break;
+                    case 22:
+                        secretary.updateAttendance(mainWindow);
+                        break;
+                    case 23:
+                        secretary.deleteAttendance(mainWindow);
+                        break;
+                    case 24:
+                        secretary.listAttendances(mainWindow);
+                        break;
+                    case 25:
+                        secretary.printProfessorStats(mainWindow);
+                        break;
+                    case 26:
+                        secretary.printStudentsPassed(mainWindow);
+                        break;
+                    case 27:
+                        secretary.printDetailedGrades(mainWindow);
+                        break;
+                    case 28:
                         secretary.saveAll();
                         break;
                     

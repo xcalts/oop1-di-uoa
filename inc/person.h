@@ -10,34 +10,34 @@ using namespace std;
 class Person
 {
 private:
-    // Fields
-    string identityID;
-    string firstName;
-    string lastName;
-    string birthDate;
+    /* Fields */
+    string identityId; // The UUID of the person.
+    string firstName;  // The first name of the person.
+    string lastName;   // The last name of the person.
+    string birthDate;  // The birth date of the person.
 
 public:
-    // Constructors
+    /* Constructors */
     Person() { }
-    Person(const string &identityID,
+    Person(const string &identityId,
            const string &firstName,
            const string &lastName,
            const string &birthDate)
-        : identityID(identityID),
+        : identityId(identityId),
           firstName(firstName),
           lastName(lastName),
           birthDate(birthDate)
     {}
 
-    // Deconstructors
+    /* Deconstructors */
     virtual ~Person()
     {
     }
 
-    // Getters
+    /* Getters */
     const string &getIdentityID() const
     {
-        return identityID;
+        return identityId;
     }
     const string &getFirstName() const
     {
@@ -52,10 +52,10 @@ public:
         return birthDate;
     }
 
-    // Setters
+    /* Setters */
     void setIdentityID(const string &newIdentityID)
     {
-        identityID = newIdentityID;
+        identityId = newIdentityID;
     }
     void setFirstName(const string &newFirstName)
     {
@@ -67,11 +67,6 @@ public:
     }
     void setBirthDate(const string &newBirthDate)
     {
-        if (!isValidDateFormat(newBirthDate))
-        {
-            throw std::invalid_argument("Invalid date format. Please use dd/mm/yyyy.");
-        }
-
         birthDate = newBirthDate;
     }
 

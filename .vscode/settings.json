@@ -53,7 +53,8 @@
     "sstream": "cpp",
     "cstring": "cpp",
     "map": "cpp",
-    "fstream": "cpp"
+    "fstream": "cpp",
+    "codecvt": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
